@@ -1,0 +1,325 @@
+export type Category = 'sofas' | 'curtains' | 'majlis';
+
+export interface Product {
+  id: string;
+  category: Category;
+  image: string;
+  name: { en: string; ar: string };
+  description: { en: string; ar: string };
+}
+
+export const products: Product[] = [
+  {
+    id: 'sofa-1',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135275/pexels-photo-8135275.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Royal Beige Sofa', ar: 'أريكة بيج ملكية' },
+    description: {
+      en: 'Luxurious beige sofa with plush cushions, crafted for ultimate comfort and elegance.',
+      ar: 'أريكة بيج فاخرة بوسائد ناعمة، مصنوعة للراحة والأناقة المطلقة.',
+    },
+  },
+  {
+    id: 'sofa-2',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/6758245/pexels-photo-6758245.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Classic Comfort Sofa', ar: 'أريكة كلاسيك مريحة' },
+    description: {
+      en: 'A timeless sofa design with premium fabric and elegant decorative pillows.',
+      ar: 'تصميم أريكة خالد بقماش فاخر ووسائد زخرفية أنيقة.',
+    },
+  },
+  {
+    id: 'sofa-3',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135267/pexels-photo-8135267.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Velvet Luxury Sofa', ar: 'أريكة مخمل فاخرة' },
+    description: {
+      en: 'Sophisticated velvet sofa set with stylish decor for modern luxury living.',
+      ar: 'طقم أريكة مخمل راقية بديكور أنيق لمعيشة فاخرة حديثة.',
+    },
+  },
+  {
+    id: 'sofa-4',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/7018400/pexels-photo-7018400.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Cozy Modern Sofa', ar: 'أريكة عصرية دافئة' },
+    description: {
+      en: 'Stylish sofa with soft pillows and a round coffee table for cozy living.',
+      ar: 'أريكة أنيقة بوسائد ناعمة وطاولة قهوة مستديرة لمعيشة دافئة.',
+    },
+  },
+  {
+    id: 'sofa-5',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135492/pexels-photo-8135492.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Grand Chandelier Sofa', ar: 'أريكة التاج الفاخرة' },
+    description: {
+      en: 'Spacious living room sofa with elegant chandeliers and contemporary decor.',
+      ar: 'أريكة غرفة معيشة واسعة بثريات أنيقة وديكور عصري.',
+    },
+  },
+  {
+    id: 'sofa-6',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/27535711/pexels-photo-27535711.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Vintage Ornate Sofa', ar: 'أريكة مزخرفة كلاسيكية' },
+    description: {
+      en: 'A classic vintage sofa with decorative pillows in a luxurious interior setting.',
+      ar: 'أريكة كلاسيكية مزخرفة بوسائد ديكورية في إعداد داخلي فاخر.',
+    },
+  },
+  {
+    id: 'curtain-1',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/33839793/pexels-photo-33839793.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Garden View Drapes', ar: 'ستائر إطلالة الحديقة' },
+    description: {
+      en: 'Elegant traditional curtains framing a beautiful garden view with warm sunlight.',
+      ar: 'ستائر تقليدية أنيقة تؤطر إطلالة حديقة جميلة بضوء شمس دافئ.',
+    },
+  },
+  {
+    id: 'curtain-2',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/462197/pexels-photo-462197.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Sheer White Curtains', ar: 'ستائر بيضاء شفافة' },
+    description: {
+      en: 'Soft sheer white curtains creating a cozy, modern, and bright interior atmosphere.',
+      ar: 'ستائر بيضاء شفافة ناعمة تخلق جواً دافئاً وعصرياً ومشرقاً.',
+    },
+  },
+  {
+    id: 'curtain-3',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/13996181/pexels-photo-13996181.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Tasseled Elegance Curtains', ar: 'ستائر الشرّابات الأنيقة' },
+    description: {
+      en: 'Warm sunlight filtering through elegant curtains with decorative tassels.',
+      ar: 'ضوء شمس دافئ يتسلل عبر ستائر أنيقة مزينة بشرّابات زخرفية.',
+    },
+  },
+  {
+    id: 'curtain-4',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/16912480/pexels-photo-16912480.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Vintage Drape Collection', ar: 'مجموعة الستائر الكلاسيكية' },
+    description: {
+      en: 'Luxurious vintage window drapes with elegant lighting and classic decor elements.',
+      ar: 'ستائر نوافذ كلاسيكية فاخرة بإضاءة أنيقة وعناصر ديكور كلاسيكية.',
+    },
+  },
+  {
+    id: 'curtain-5',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/24819258/pexels-photo-24819258.png?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Floral Tassel Curtains', ar: 'ستائر زهور وشرّابات' },
+    description: {
+      en: 'Luxurious floral curtains with intricate tassel details for a traditional touch.',
+      ar: 'ستائر زهور فاخرة بتفاصيل شرّابات معقدة للمسة تقليدية أصيلة.',
+    },
+  },
+  {
+    id: 'curtain-6',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/8082311/pexels-photo-8082311.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Grand Window Drapes', ar: 'ستائر النوافذ الكبرى' },
+    description: {
+      en: 'Elegant drapery for large windows with modern decor and chandelier lighting.',
+      ar: 'ستائر أنيقة للنوافذ الكبيرة بديكور حديث وإضاءة ثريات.',
+    },
+  },
+  {
+    id: 'majlis-1',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/18285958/pexels-photo-18285958.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Traditional Majlis Set', ar: 'طقم مجلس تقليدي' },
+    description: {
+      en: 'Luxurious traditional living room with ornate design and plush floor cushions.',
+      ar: 'غرفة معيشة تقليدية فاخرة بتصميم مزخرف ووسائد أرضية ناعمة.',
+    },
+  },
+  {
+    id: 'majlis-2',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/37542593/pexels-photo-37542593.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Golden Palace Majlis', ar: 'مجلس القصر الذهبي' },
+    description: {
+      en: 'Elaborate golden architectural design in an opulent and richly decorated setting.',
+      ar: 'تصميم معماري ذهبي متقن في إعداد فاخر وغني بالزخارف.',
+    },
+  },
+  {
+    id: 'majlis-3',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/34936237/pexels-photo-34936237.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Moroccan Style Majlis', ar: 'مجلس على الطراز المغربي' },
+    description: {
+      en: 'Sophisticated Moroccan-style seating with ornate decor, plush seating, and chandeliers.',
+      ar: 'جلوس على الطراز المغربي الراقي بديكور مزخرف ووسائد فاخرة وثريات.',
+    },
+  },
+  {
+    id: 'majlis-4',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/18767559/pexels-photo-18767559.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Desert Camp Majlis', ar: 'مجلس المخيم الصحراوي' },
+    description: {
+      en: 'Traditional desert camp setup with floor cushions, tents, and lanterns.',
+      ar: 'إعداد مخيم صحراوي تقليدي بوسائد أرضية وخيام وفوانيس.',
+    },
+  },
+  {
+    id: 'majlis-5',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/30664540/pexels-photo-30664540.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Vibrant Majlis Interior', ar: 'مجلس داخلي نابض' },
+    description: {
+      en: 'Vibrant interior with colorful patterned textiles and cushions creating cozy atmosphere.',
+      ar: 'ديكور داخلي نابض بأقمشة منقوشة ملونة ووسائد تخلق جواً دافئاً.',
+    },
+  },
+  {
+    id: 'majlis-6',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/33590155/pexels-photo-33590155.jpeg?auto=compress&cs=tinysrgb&w=800',
+    name: { en: 'Ottoman Style Majlis', ar: 'مجلس على الطراز العثماني' },
+    description: {
+      en: 'Detailed Ottoman-style interior with ornate woodwork and rich textiles.',
+      ar: 'ديكور داخلي عثماني مفصل بنقوش خشبية مزخرفة وأقمشة غنية.',
+    },
+  },
+];
+
+export interface GalleryImage {
+  id: string;
+  category: Category;
+  image: string;
+  caption: { en: string; ar: string };
+}
+
+export const galleryImages: GalleryImage[] = [
+  {
+    id: 'g1',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/18285958/pexels-photo-18285958.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Traditional Majlis Living Room', ar: 'غرفة مجلس تقليدية' },
+  },
+  {
+    id: 'g2',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135275/pexels-photo-8135275.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Royal Beige Sofa Set', ar: 'طقم أريكة بيج ملكية' },
+  },
+  {
+    id: 'g3',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/33839793/pexels-photo-33839793.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Garden View Curtains', ar: 'ستائر إطلالة الحديقة' },
+  },
+  {
+    id: 'g4',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135267/pexels-photo-8135267.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Velvet Luxury Living Room', ar: 'غرفة معيشة مخمل فاخرة' },
+  },
+  {
+    id: 'g5',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/37542593/pexels-photo-37542593.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Golden Palace Interior', ar: 'ديكور القصر الذهبي' },
+  },
+  {
+    id: 'g6',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/462197/pexels-photo-462197.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Sheer White Drapes', ar: 'ستائر بيضاء شفافة' },
+  },
+  {
+    id: 'g7',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/34936237/pexels-photo-34936237.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Moroccan Style Seating', ar: 'جلوس على الطراز المغربي' },
+  },
+  {
+    id: 'g8',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/8135492/pexels-photo-8135492.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Grand Living Room Design', ar: 'تصميم غرفة معيشة كبرى' },
+  },
+  {
+    id: 'g9',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/16912480/pexels-photo-16912480.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Vintage Window Drapes', ar: 'ستائر نوافذ كلاسيكية' },
+  },
+  {
+    id: 'g10',
+    category: 'majlis',
+    image: 'https://images.pexels.com/photos/33590155/pexels-photo-33590155.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Ottoman Style Interior', ar: 'ديكور على الطراز العثماني' },
+  },
+  {
+    id: 'g11',
+    category: 'sofas',
+    image: 'https://images.pexels.com/photos/7018400/pexels-photo-7018400.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Cozy Modern Living Space', ar: 'مساحة معيشة عصرية دافئة' },
+  },
+  {
+    id: 'g12',
+    category: 'curtains',
+    image: 'https://images.pexels.com/photos/8082311/pexels-photo-8082311.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    caption: { en: 'Grand Window Treatment', ar: 'معالجة نوافذ كبرى' },
+  },
+];
+
+export interface Testimonial {
+  id: string;
+  name: { en: string; ar: string };
+  text: { en: string; ar: string };
+  location: { en: string; ar: string };
+  rating: number;
+}
+
+export const testimonials: Testimonial[] = [
+  {
+    id: 't1',
+    name: { en: 'Abdullah Al-Rashid', ar: 'عبدالله الراشد' },
+    text: {
+      en: 'The majlis they crafted for our home is absolutely stunning. The attention to detail and quality of fabrics is unmatched. Truly a five-star experience.',
+      ar: 'المجلس الذي صنعوه لمنزلنا مذهل تماماً. الاهتمام بالتفاصيل وجودة الأقمشة لا مثيل لها. تجربة تستحق خمس نجوم بجدارة.',
+    },
+    location: { en: 'Riyadh, Saudi Arabia', ar: 'الرياض، السعودية' },
+    rating: 5,
+  },
+  {
+    id: 't2',
+    name: { en: 'Fatima Al-Sabah', ar: 'فاطمة الصباح' },
+    text: {
+      en: 'Our custom curtains transformed the entire house. The team understood exactly what we wanted and delivered beyond our expectations.',
+      ar: 'الستائر المخصصة حولت المنزل بالكامل. فهم الفريق بالضبط ما نريده وقدم أكثر من توقعاتنا.',
+    },
+    location: { en: 'Kuwait City, Kuwait', ar: 'مدينة الكويت، الكويت' },
+    rating: 5,
+  },
+  {
+    id: 't3',
+    name: { en: 'Mohammed Al-Maktoum', ar: 'محمد المكتوم' },
+    text: {
+      en: 'Exceptional craftsmanship and professional service from start to finish. The sofa set is the centerpiece of our living room. Highly recommended.',
+      ar: 'حرفية استثنائية وخدمة احترافية من البداية للنهاية. طقم الأريكة هو محور غرفة معيشتنا. نوصي به بشدة.',
+    },
+    location: { en: 'Dubai, UAE', ar: 'دبي، الإمارات' },
+    rating: 5,
+  },
+  {
+    id: 't4',
+    name: { en: 'Aisha Al-Thani', ar: 'عائشة آل ثاني' },
+    text: {
+      en: 'From consultation to installation, everything was seamless. The majlis seating is not just beautiful but incredibly comfortable. Thank you Tafseel!',
+      ar: 'من الاستشارة إلى التركيب، كان كل شيء سلساً. جلوس المجلس ليس فقط جميلاً بل مريحاً بشكل لا يصدق. شكراً تفصيل!',
+    },
+    location: { en: 'Doha, Qatar', ar: 'الدوحة، قطر' },
+    rating: 5,
+  },
+];

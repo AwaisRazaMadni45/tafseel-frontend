@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream-50 text-charcoal-800 transition-all duration-300;
+  }
+  body[dir="rtl"] {
+    @apply font-arabic;
+  }
+  body[dir="ltr"] {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 text-white font-medium rounded-lg shadow-lg shadow-gold-600/30 hover:shadow-xl hover:shadow-gold-600/40 hover:scale-105 transition-all duration-300;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-gold-500 text-gold-600 font-medium rounded-lg hover:bg-gold-500 hover:text-white transition-all duration-300;
+  }
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28;
+  }
+  .container-lux {
+    @apply max-w-7xl mx-auto;
+  }
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent;
+  }
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-2xl hover:shadow-gold-900/20 hover:-translate-y-2;
+  }
+  .nav-link {
+    @apply relative text-charcoal-600 hover:text-gold-600 font-medium transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold-500 after:transition-all after:duration-300 hover:after:w-full;
+  }
+  body[dir="rtl"] .nav-link {
+    @apply after:right-0 after:left-auto;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border border-cream-300 bg-white/80 text-charcoal-700 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all duration-300;
+  }
+  .ornament-line {
+    @apply flex items-center justify-center gap-3;
+  }
+  .ornament-line::before,
+  .ornament-line::after {
+    content: '';
+    @apply h-px w-12 bg-gradient-to-r from-transparent to-gold-400;
+  }
+  .ornament-line::after {
+    @apply from-gold-400 to-transparent;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-cream-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gold-400 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gold-500;
+}
+
+/* Lightbox */
+.lightbox-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm;
+}
