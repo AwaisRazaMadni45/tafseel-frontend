@@ -1,9 +1,13 @@
 import { useLanguage } from '@/context/LanguageContext';
 import type { Page } from '@/components/Navbar';
-import { products, testimonials } from '@/data/products';
 import { ProductCard } from '@/components/ProductCard';
-import { ArrowRight, ArrowLeft, Sofa, Blinds, Layers, Award, Palette, Headphones, Truck, Star, Quote, Send } from 'lucide-react';
-import { useState } from 'react';
+import { getFeaturedProducts, getReviews, getProducts } from '@/lib/api';
+import type { ApiProduct, ApiReview } from '@/types/api';
+import {
+  ArrowRight, ArrowLeft, Sofa, Blinds, Layers,
+  Award, Palette, Headphones, Truck, Star, Quote, Send, Loader2,
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface HomeProps {
   onNavigate: (page: Page) => void;
@@ -15,12 +19,50 @@ export function Home({ onNavigate }: HomeProps) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
-  const featuredProducts = products.slice(0, 6);
+  // Featured products state
+  const [featuredProducts, setFeaturedProducts] = useState<ApiProduct[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
+  // Reviews / testimonials state
+  const [reviews, setReviews] = useState<ApiReview[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+
+  // Fetch featured products on mount
+  useEffect(() => {
+    getFeaturedProducts()
+      .then((data) => {
+        // If no featured products exist yet, fall back to latest 6
+        if (data.length === 0) {
+          return getProducts().then((all) => all.slice(0, 6));
+        }
+        return data;
+      })
+      .then((data) => setFeaturedProducts(data))
+      .catch(() => setFeaturedProducts([]))
+      .finally(() => setProductsLoading(false));
+  }, []);
+
+  // Fetch reviews on mount
+  useEffect(() => {
+    getReviews()
+      .then((data) => setReviews(data))
+      .catch(() => setReviews([]))
+      .finally(() => setReviewsLoading(false));
+  }, []);
 
   const categories = [
-    { key: 'sofas', icon: Sofa, name: t.categories.sofas, desc: t.categories.sofasDesc, image: 'https://images.pexels.com/photos/8135275/pexels-photo-8135275.jpeg?auto=compress&cs=tinysrgb&w=800' },
-    { key: 'curtains', icon: Blinds, name: t.categories.curtains, desc: t.categories.curtainsDesc, image: 'https://images.pexels.com/photos/33839793/pexels-photo-33839793.jpeg?auto=compress&cs=tinysrgb&w=800' },
-    { key: 'majlis', icon: Layers, name: t.categories.majlis, desc: t.categories.majlisDesc, image: 'https://images.pexels.com/photos/18285958/pexels-photo-18285958.jpeg?auto=compress&cs=tinysrgb&w=800' },
+    {
+      key: 'sofas', icon: Sofa, name: t.categories.sofas, desc: t.categories.sofasDesc,
+      image: 'https://images.pexels.com/photos/8135275/pexels-photo-8135275.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
+    {
+      key: 'curtains', icon: Blinds, name: t.categories.curtains, desc: t.categories.curtainsDesc,
+      image: 'https://images.pexels.com/photos/33839793/pexels-photo-33839793.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
+    {
+      key: 'majlis', icon: Layers, name: t.categories.majlis, desc: t.categories.majlisDesc,
+      image: 'https://images.pexels.com/photos/18285958/pexels-photo-18285958.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
   ];
 
   const features = [
@@ -58,11 +100,17 @@ export function Home({ onNavigate }: HomeProps) {
             <span className="text-gold-200 text-sm font-medium tracking-wide">{t.hero.badge}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fade-in-up" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+          <h1
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fade-in-up"
+            dir={lang === 'ar' ? 'rtl' : 'ltr'}
+          >
             {t.hero.title}
           </h1>
 
-          <p className="text-lg sm:text-xl text-cream-100/90 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p
+            className="text-lg sm:text-xl text-cream-100/90 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
+            style={{ animationDelay: '0.2s' }}
+          >
             {t.hero.subtitle}
           </p>
 
@@ -99,7 +147,12 @@ export function Home({ onNavigate }: HomeProps) {
                 style={{ animationDelay: `${i * 0.15}s` }}
               >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img src={cat.image} alt={cat.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -160,18 +213,30 @@ export function Home({ onNavigate }: HomeProps) {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {productsLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-10 h-10 text-gold-500 animate-spin" />
+            </div>
+          ) : featuredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-charcoal-500 py-16">{t.products.noResults}</p>
+          )}
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="section-padding bg-gradient-to-br from-charcoal-800 to-charcoal-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <img src="https://images.pexels.com/photos/37542593/pexels-photo-37542593.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="" className="w-full h-full object-cover" />
+          <img
+            src="https://images.pexels.com/photos/37542593/pexels-photo-37542593.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="container-lux relative z-10">
           <div className="text-center mb-14">
@@ -181,28 +246,37 @@ export function Home({ onNavigate }: HomeProps) {
             <h2 className="text-3xl sm:text-4xl font-bold text-white">{t.testimonials.subtitle}</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 card-hover">
-                <Quote className="w-10 h-10 text-gold-400/40 mb-4" />
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-gold-400 text-gold-400" />
-                  ))}
-                </div>
-                <p className="text-cream-100/90 leading-relaxed mb-6 text-lg">"{testimonial.text[lang]}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-bold text-lg">
-                    {testimonial.name[lang].charAt(0)}
+          {reviewsLoading ? (
+            <div className="flex justify-center items-center py-16">
+              <Loader2 className="w-10 h-10 text-gold-400 animate-spin" />
+            </div>
+          ) : reviews.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {reviews.map((review) => (
+                <div key={review._id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 card-hover">
+                  <Quote className="w-10 h-10 text-gold-400/40 mb-4" />
+                  <div className="flex gap-1 mb-4">
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-gold-400 text-gold-400" />
+                    ))}
                   </div>
-                  <div>
-                    <p className="font-semibold text-white">{testimonial.name[lang]}</p>
-                    <p className="text-sm text-cream-300">{testimonial.location[lang]}</p>
+                  <p className="text-cream-100/90 leading-relaxed mb-6 text-lg">"{review.text[lang]}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-bold text-lg">
+                      {review.name[lang].charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">{review.name[lang]}</p>
+                      <p className="text-sm text-cream-300">{review.location[lang]}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            // No reviews yet — show empty state gracefully
+            <p className="text-center text-cream-100/60 py-12">{t.testimonials.subtitle}</p>
+          )}
         </div>
       </section>
 
@@ -224,7 +298,10 @@ export function Home({ onNavigate }: HomeProps) {
                   required
                   className="flex-1 px-5 py-3.5 rounded-lg text-charcoal-700 bg-white/95 focus:outline-none focus:ring-2 focus:ring-white"
                 />
-                <button type="submit" className="px-6 py-3.5 bg-charcoal-800 text-white font-medium rounded-lg hover:bg-charcoal-900 transition-colors duration-300 inline-flex items-center justify-center gap-2 whitespace-nowrap">
+                <button
+                  type="submit"
+                  className="px-6 py-3.5 bg-charcoal-800 text-white font-medium rounded-lg hover:bg-charcoal-900 transition-colors duration-300 inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                >
                   <Send className="w-4 h-4" />
                   {t.newsletter.button}
                 </button>

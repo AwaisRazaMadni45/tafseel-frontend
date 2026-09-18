@@ -1,22 +1,31 @@
 import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react';
+import { submitContact } from '@/lib/api';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
   const { t } = useLanguage();
   const [form, setForm] = useState({ name: '', phone: '', message: '' });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    setError(null);
+
+    try {
+      await submitContact(form);
       setSent(true);
       setForm({ name: '', phone: '', message: '' });
       setTimeout(() => setSent(false), 5000);
-    }, 1500);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      setError(message);
+    } finally {
+      setSending(false);
+    }
   };
 
   const phoneNumber = '966501234567';
@@ -27,7 +36,11 @@ export function Contact() {
       {/* Header */}
       <section className="relative py-20 bg-gradient-to-br from-charcoal-800 via-charcoal-800 to-brown-800 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src="https://images.pexels.com/photos/8082311/pexels-photo-8082311.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="" className="w-full h-full object-cover" />
+          <img
+            src="https://images.pexels.com/photos/8082311/pexels-photo-8082311.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="container-lux px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="ornament-line mb-4">
@@ -79,6 +92,7 @@ export function Contact() {
                     className="input-field resize-none"
                   />
                 </div>
+
                 <button
                   type="submit"
                   disabled={sending}
@@ -96,10 +110,20 @@ export function Contact() {
                     </>
                   )}
                 </button>
+
+                {/* Success message */}
                 {sent && (
                   <div className="flex items-center gap-2 text-green-600 font-medium animate-fade-in">
                     <CheckCircle className="w-5 h-5" />
                     {t.contact.success}
+                  </div>
+                )}
+
+                {/* Error message */}
+                {error && (
+                  <div className="flex items-center gap-2 text-red-500 font-medium animate-fade-in">
+                    <AlertCircle className="w-5 h-5" />
+                    {error}
                   </div>
                 )}
               </form>

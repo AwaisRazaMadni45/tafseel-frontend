@@ -1,14 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { products, type Category } from '@/data/products';
 import { ProductCard } from '@/components/ProductCard';
-import { Sofa, Blinds, Layers, LayoutGrid } from 'lucide-react';
+import { getProducts } from '@/lib/api';
+import type { ApiProduct, Category } from '@/types/api';
+import { Sofa, Blinds, Layers, LayoutGrid, Loader2, AlertCircle } from 'lucide-react';
 
 type Filter = 'all' | Category;
 
 export function Products() {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<Filter>('all');
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    const category = filter === 'all' ? undefined : filter;
+    getProducts(category)
+      .then((data) => setProducts(data))
+      .catch((err: Error) => setError(err.message || 'Failed to load products'))
+      .finally(() => setLoading(false));
+  }, [filter]);
 
   const filters: { key: Filter; label: string; icon: typeof Sofa }[] = [
     { key: 'all', label: t.products.all, icon: LayoutGrid },
@@ -17,14 +32,16 @@ export function Products() {
     { key: 'majlis', label: t.products.majlis, icon: Layers },
   ];
 
-  const filtered = filter === 'all' ? products : products.filter((p) => p.category === filter);
-
   return (
     <div className="pt-24">
       {/* Header */}
       <section className="relative py-20 bg-gradient-to-br from-charcoal-800 via-charcoal-800 to-brown-800 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src="https://images.pexels.com/photos/8135492/pexels-photo-8135492.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="" className="w-full h-full object-cover" />
+          <img
+            src="https://images.pexels.com/photos/8135492/pexels-photo-8135492.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="container-lux px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="ornament-line mb-4">
@@ -56,15 +73,38 @@ export function Products() {
             ))}
           </div>
 
-          {/* Product grid */}
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-              {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          {/* Loading state */}
+          {loading && (
+            <div className="flex justify-center items-center py-24">
+              <Loader2 className="w-10 h-10 text-gold-500 animate-spin" />
             </div>
-          ) : (
-            <p className="text-center text-charcoal-500 text-lg py-20">{t.products.noResults}</p>
+          )}
+
+          {/* Error state */}
+          {!loading && error && (
+            <div className="flex flex-col items-center gap-3 py-24 text-center">
+              <AlertCircle className="w-10 h-10 text-red-400" />
+              <p className="text-charcoal-600 text-lg">{error}</p>
+              <button
+                onClick={() => setFilter(filter)}
+                className="mt-2 px-5 py-2 rounded-full border border-gold-400 text-gold-600 hover:bg-gold-50 transition-colors text-sm font-medium"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+
+          {/* Product grid */}
+          {!loading && !error && (
+            products.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-charcoal-500 text-lg py-20">{t.products.noResults}</p>
+            )
           )}
         </div>
       </section>
