@@ -11,9 +11,28 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
+function getSavedLang(): Language {
+  try {
+    const saved = localStorage.getItem('tafseel_lang');
+    if (saved === 'en' || saved === 'ar') return saved;
+  } catch {
+    // localStorage not available (SSR / private mode edge case)
+  }
+  return 'ar'; // default Arabic
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>('ar');
+  const [lang, setLangState] = useState<Language>(getSavedLang);
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  const setLang = (newLang: Language) => {
+    setLangState(newLang);
+    try {
+      localStorage.setItem('tafseel_lang', newLang);
+    } catch {
+      // ignore
+    }
+  };
 
   useEffect(() => {
     document.documentElement.dir = dir;
@@ -21,7 +40,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.body.dir = dir;
   }, [lang, dir]);
 
-  const toggleLang = () => setLang((prev) => (prev === 'ar' ? 'en' : 'ar'));
+  const toggleLang = () => setLang(lang === 'ar' ? 'en' : 'ar');
 
   return (
     <LanguageContext.Provider value={{ lang, t: translations[lang], setLang, toggleLang, dir }}>

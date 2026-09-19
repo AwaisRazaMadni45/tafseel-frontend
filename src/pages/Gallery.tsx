@@ -12,6 +12,7 @@ export function Gallery() {
   const [photos, setPhotos] = useState<ApiGalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const filters: { key: Filter; label: string; icon: typeof Sofa }[] = [
@@ -32,7 +33,7 @@ export function Gallery() {
       .then((data) => setPhotos(data))
       .catch((err: Error) => setError(err.message || 'Failed to load gallery'))
       .finally(() => setLoading(false));
-  }, [filter]);
+  }, [filter, retryCount]);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const nextImage = useCallback(() => {
@@ -111,7 +112,7 @@ export function Gallery() {
               <AlertCircle className="w-10 h-10 text-red-400" />
               <p className="text-charcoal-600 text-lg">{error}</p>
               <button
-                onClick={() => setFilter(filter)}
+                onClick={() => setRetryCount((c) => c + 1)}
                 className="mt-2 px-5 py-2 rounded-full border border-gold-400 text-gold-600 hover:bg-gold-50 transition-colors text-sm font-medium"
               >
                 Try Again
@@ -121,7 +122,7 @@ export function Gallery() {
 
           {/* Empty state */}
           {!loading && !error && photos.length === 0 && (
-            <p className="text-center text-charcoal-500 text-lg py-20">{t.gallery.noResults ?? 'No photos found.'}</p>
+            <p className="text-center text-charcoal-500 text-lg py-20">{t.gallery.noResults}</p>
           )}
 
           {/* Masonry-style grid */}

@@ -88,6 +88,7 @@ export interface Translation {
     sofas: string;
     curtains: string;
     majlis: string;
+    noResults: string;
   };
   contact: {
     title: string;
@@ -217,6 +218,7 @@ export const translations: Record<Language, Translation> = {
       sofas: 'Sofas',
       curtains: 'Curtains',
       majlis: 'Majlis',
+      noResults: 'No photos found in this category',
     },
     contact: {
       title: 'Get In Touch',
@@ -344,6 +346,7 @@ export const translations: Record<Language, Translation> = {
       sofas: 'أرائك',
       curtains: 'ستائر',
       majlis: 'مجالس',
+      noResults: 'لا توجد صور في هذه الفئة',
     },
     contact: {
       title: 'تواصل معنا',

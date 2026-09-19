@@ -1,29 +1,31 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { ProductCard } from '@/components/ProductCard';
+import { ProductModal } from '@/components/ProductModal';
 import { getProducts } from '@/lib/api';
 import type { ApiProduct, Category } from '@/types/api';
 import { Sofa, Blinds, Layers, LayoutGrid, Loader2, AlertCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 type Filter = 'all' | Category;
 
 export function Products() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [filter, setFilter] = useState<Filter>('all');
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0); // fixed retry trigger
+  const [selectedProduct, setSelectedProduct] = useState<ApiProduct | null>(null);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-
     const category = filter === 'all' ? undefined : filter;
     getProducts(category)
       .then((data) => setProducts(data))
       .catch((err: Error) => setError(err.message || 'Failed to load products'))
       .finally(() => setLoading(false));
-  }, [filter]);
+  }, [filter, retryCount]); // retryCount forces re-fetch
 
   const filters: { key: Filter; label: string; icon: typeof Sofa }[] = [
     { key: 'all', label: t.products.all, icon: LayoutGrid },
@@ -73,33 +75,59 @@ export function Products() {
             ))}
           </div>
 
-          {/* Loading state */}
+          {/* Loading */}
           {loading && (
             <div className="flex justify-center items-center py-24">
               <Loader2 className="w-10 h-10 text-gold-500 animate-spin" />
             </div>
           )}
 
-          {/* Error state */}
+          {/* Error — fixed retry */}
           {!loading && error && (
             <div className="flex flex-col items-center gap-3 py-24 text-center">
               <AlertCircle className="w-10 h-10 text-red-400" />
               <p className="text-charcoal-600 text-lg">{error}</p>
               <button
-                onClick={() => setFilter(filter)}
+                onClick={() => setRetryCount((c) => c + 1)}
                 className="mt-2 px-5 py-2 rounded-full border border-gold-400 text-gold-600 hover:bg-gold-50 transition-colors text-sm font-medium"
               >
-                Try Again
+                {lang === 'ar' ? 'حاول مجدداً' : 'Try Again'}
               </button>
             </div>
           )}
 
-          {/* Product grid */}
+          {/* Product grid — cards open modal on click */}
           {!loading && !error && (
             products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in">
                 {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+                  <button
+                    key={product._id}
+                    onClick={() => setSelectedProduct(product)}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md card-hover text-start border border-cream-100"
+                  >
+                    <div className="relative overflow-hidden aspect-[4/5]">
+                      <img
+                        src={product.images?.[0] || ''}
+                        alt={product.name[lang]}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <div className="p-3 sm:p-4">
+                      <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1 line-clamp-1">
+                        {product.name[lang]}
+                      </h3>
+                      <p className="text-xs text-charcoal-500 line-clamp-2 mb-3">
+                        {product.description[lang]}
+                      </p>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gold-600">
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        {t.products.enquire}
+                      </span>
+                    </div>
+                  </button>
                 ))}
               </div>
             ) : (
@@ -108,6 +136,14 @@ export function Products() {
           )}
         </div>
       </section>
+
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
     </div>
   );
 }

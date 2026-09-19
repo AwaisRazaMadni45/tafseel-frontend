@@ -2,12 +2,13 @@ import { useLanguage } from '@/context/LanguageContext';
 import type { Page } from '@/components/Navbar';
 import { getFeaturedProducts, getReviews, getProducts } from '@/lib/api';
 import type { ApiProduct, ApiReview } from '@/types/api';
+import { ProductModal } from '@/components/ProductModal';
 import {
   ArrowRight, ArrowLeft, Sofa, Blinds, Layers,
   Award, Palette, Headphones, Truck, Star, Quote, Send, Loader2,
-  X, ChevronLeft, ChevronRight, MessageCircle,
+  MessageCircle,
 } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 interface HomeProps {
   onNavigate: (page: Page) => void;
@@ -29,7 +30,6 @@ export function Home({ onNavigate }: HomeProps) {
 
   // Product detail modal state
   const [selectedProduct, setSelectedProduct] = useState<ApiProduct | null>(null);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Fetch featured products on mount
   useEffect(() => {
@@ -121,16 +121,7 @@ export function Home({ onNavigate }: HomeProps) {
     }
   };
 
-  // WhatsApp inquiry link for a product
-  const whatsappLink = (product: ApiProduct) => {
-    const phone = '966582913730';
-    const msg = encodeURIComponent(
-      lang === 'ar'
-        ? `مرحباً، أنا مهتم بـ: ${product.name.ar}`
-        : `Hello, I'm interested in: ${product.name.en}`
-    );
-    return `https://wa.me/${phone}?text=${msg}`;
-  };
+  // WhatsApp inquiry link for a product — now handled by ProductModal component
 
   return (
     <div>
@@ -239,7 +230,7 @@ export function Home({ onNavigate }: HomeProps) {
               {featuredProducts.map((product) => (
                 <button
                   key={product._id}
-                  onClick={() => openModal(product)}
+                  onClick={() => setSelectedProduct(product)}
                   className="group bg-white rounded-2xl overflow-hidden shadow-md card-hover text-start border border-cream-100"
                 >
                   <div className="relative overflow-hidden aspect-[4/5]">
@@ -362,81 +353,11 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* ── Product Detail Modal ── */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-charcoal-900/70 backdrop-blur-sm animate-fade-in" onClick={closeModal}>
-          <div
-            className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Image carousel */}
-            <div className="relative bg-charcoal-900 aspect-[4/3] shrink-0">
-              <img
-                src={selectedProduct.images[activeImageIndex] || ''}
-                alt={selectedProduct.name[lang]}
-                className="w-full h-full object-cover"
-              />
-
-              {/* Close button */}
-              <button onClick={closeModal} className="absolute top-3 end-3 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-colors z-10" aria-label="Close">
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Image navigation — only if multiple images */}
-              {selectedProduct.images.length > 1 && (
-                <>
-                  <button onClick={prevImage} className="absolute start-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-colors" aria-label="Previous">
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button onClick={nextImage} className="absolute end-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-colors" aria-label="Next">
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                  {/* Dots */}
-                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-                    {selectedProduct.images.map((_, i) => (
-                      <button key={i} onClick={() => setActiveImageIndex(i)} className={`w-2 h-2 rounded-full transition-all ${i === activeImageIndex ? 'bg-white scale-125' : 'bg-white/50'}`} />
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Image counter */}
-              {selectedProduct.images.length > 1 && (
-                <div className="absolute top-3 start-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
-                  {activeImageIndex + 1} / {selectedProduct.images.length}
-                </div>
-              )}
-            </div>
-
-            {/* Product details */}
-            <div className="p-5 overflow-y-auto">
-              {/* Category badge */}
-              <span className="inline-block px-3 py-1 text-xs font-medium bg-gold-100 text-gold-700 rounded-full mb-3 capitalize">
-                {selectedProduct.category}
-              </span>
-
-              <h2 className="text-xl font-bold text-charcoal-800 mb-2">{selectedProduct.name[lang]}</h2>
-              <p className="text-sm text-charcoal-500 leading-relaxed mb-5">{selectedProduct.description[lang]}</p>
-
-              {/* Inquire Now — WhatsApp */}
-              <a
-                href={whatsappLink(selectedProduct)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors duration-300 text-sm"
-              >
-                <MessageCircle className="w-5 h-5" />
-                {lang === 'ar' ? 'استفسر الآن عبر واتساب' : 'Inquire Now on WhatsApp'}
-              </a>
-
-              {/* View all products link */}
-              <button
-                onClick={() => { closeModal(); onNavigate('products'); }}
-                className="mt-3 w-full py-3 border border-gold-300 text-gold-600 font-medium rounded-xl hover:bg-gold-50 transition-colors text-sm"
-              >
-                {lang === 'ar' ? 'عرض جميع المنتجات' : 'View All Products'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onViewAll={() => onNavigate('products')}
+        />
       )}
     </div>
   );
