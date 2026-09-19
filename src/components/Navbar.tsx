@@ -41,16 +41,19 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled
             ? 'bg-cream-50/95 backdrop-blur-md shadow-lg shadow-charcoal-900/5 py-2'
-            : 'bg-transparent py-4'
+            : 'bg-transparent py-3'
         }`}
       >
-        <nav className="container-lux px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <nav className="container-lux px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2">
           {/* Logo */}
-          <button onClick={() => handleNavigate('home')} className="flex flex-col items-start gap-0">
-            <span className={`font-arabic text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
+          <button
+            onClick={() => handleNavigate('home')}
+            className="flex flex-col items-start gap-0 shrink-0 max-w-[45%] sm:max-w-none"
+          >
+            <span className={`font-arabic text-lg sm:text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
               تفصيل ستائر و مجالس
             </span>
-            <span className={`text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
+            <span className={`text-[10px] sm:text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
               Tafseel Curtains & Majlis
             </span>
           </button>
@@ -74,15 +77,18 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
             ))}
           </div>
 
-          {/* Right side */}
-          <div className="flex items-center gap-3">
+          {/* Right side — language switcher + hamburger */}
+          <div className="flex items-center gap-2 shrink-0">
             <LanguageSwitcher />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-lg text-charcoal-700 hover:bg-cream-100 transition-colors"
+              className="lg:hidden p-2 rounded-lg transition-colors"
               aria-label="Menu"
             >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className={`w-6 h-6 ${scrolled ? 'text-charcoal-700' : 'text-white'}`} />}
+              {mobileOpen
+                ? <X className="w-6 h-6 text-charcoal-700" />
+                : <Menu className={`w-6 h-6 ${scrolled ? 'text-charcoal-700' : 'text-white'}`} />
+              }
             </button>
           </div>
         </nav>

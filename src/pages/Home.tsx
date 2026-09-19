@@ -138,34 +138,61 @@ export function Home({ onNavigate }: HomeProps) {
             <h2 className="text-3xl sm:text-4xl font-bold text-charcoal-800">{t.categories.subtitle}</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {categories.map((cat, i) => (
-              <button
-                key={cat.key}
-                onClick={() => onNavigate('products')}
-                className="group relative rounded-2xl overflow-hidden shadow-lg card-hover text-start"
-                style={{ animationDelay: `${i * 0.15}s` }}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <cat.icon className="w-8 h-8 text-gold-400 mb-3" />
-                  <h3 className="text-xl font-bold text-white mb-1.5">{cat.name}</h3>
-                  <p className="text-sm text-cream-100/80 mb-3 line-clamp-2">{cat.desc}</p>
-                  <span className="inline-flex items-center gap-1.5 text-sm text-gold-400 font-medium">
-                    {t.categories.explore}
-                    <Arrow className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </button>
-            ))}
+          {/* Categories: first card full width, next two side by side */}
+          <div className="flex flex-col gap-4">
+            {/* First category — full width */}
+            <button
+              onClick={() => onNavigate('products')}
+              className="group relative rounded-2xl overflow-hidden shadow-lg card-hover text-start w-full"
+            >
+              <div className="aspect-[16/7] overflow-hidden">
+                <img
+                  src={categories[0].image}
+                  alt={categories[0].name}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                {(() => { const Icon = categories[0].icon; return <Icon className="w-6 h-6 text-gold-400 mb-2" />; })()}
+                <h3 className="text-lg font-bold text-white mb-1">{categories[0].name}</h3>
+                <p className="text-xs text-cream-100/80 mb-2 line-clamp-1">{categories[0].desc}</p>
+                <span className="inline-flex items-center gap-1 text-xs text-gold-400 font-medium">
+                  {t.categories.explore}
+                  <Arrow className="w-3 h-3" />
+                </span>
+              </div>
+            </button>
+
+            {/* Remaining two categories side by side */}
+            <div className="grid grid-cols-2 gap-4">
+              {categories.slice(1).map((cat) => (
+                <button
+                  key={cat.key}
+                  onClick={() => onNavigate('products')}
+                  className="group relative rounded-2xl overflow-hidden shadow-lg card-hover text-start"
+                >
+                  <div className="aspect-[3/4] overflow-hidden">
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <cat.icon className="w-5 h-5 text-gold-400 mb-1.5" />
+                    <h3 className="text-sm font-bold text-white mb-1">{cat.name}</h3>
+                    <span className="inline-flex items-center gap-1 text-xs text-gold-400 font-medium">
+                      {t.categories.explore}
+                      <Arrow className="w-3 h-3" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -180,17 +207,17 @@ export function Home({ onNavigate }: HomeProps) {
             <h2 className="text-3xl sm:text-4xl font-bold text-charcoal-800">{t.whyChooseUs.subtitle}</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="group bg-white rounded-2xl p-7 text-center shadow-md card-hover border border-cream-200"
+                className="group bg-white rounded-2xl p-5 text-center shadow-md card-hover border border-cream-200"
               >
-                <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center group-hover:from-gold-400 group-hover:to-gold-500 transition-all duration-500">
-                  <feature.icon className="w-8 h-8 text-gold-600 group-hover:text-white transition-colors duration-500" />
+                <div className="w-12 h-12 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center group-hover:from-gold-400 group-hover:to-gold-500 transition-all duration-500">
+                  <feature.icon className="w-6 h-6 text-gold-600 group-hover:text-white transition-colors duration-500" />
                 </div>
-                <h3 className="font-semibold text-lg text-charcoal-800 mb-2">{feature.title}</h3>
-                <p className="text-sm text-charcoal-500 leading-relaxed">{feature.desc}</p>
+                <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1.5">{feature.title}</h3>
+                <p className="text-xs text-charcoal-500 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -251,30 +278,29 @@ export function Home({ onNavigate }: HomeProps) {
               <Loader2 className="w-10 h-10 text-gold-400 animate-spin" />
             </div>
           ) : reviews.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {reviews.map((review) => (
-                <div key={review._id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 card-hover">
-                  <Quote className="w-10 h-10 text-gold-400/40 mb-4" />
-                  <div className="flex gap-1 mb-4">
+                <div key={review._id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 card-hover">
+                  <Quote className="w-7 h-7 text-gold-400/40 mb-3" />
+                  <div className="flex gap-1 mb-3">
                     {Array.from({ length: review.rating }).map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-gold-400 text-gold-400" />
+                      <Star key={i} className="w-4 h-4 fill-gold-400 text-gold-400" />
                     ))}
                   </div>
-                  <p className="text-cream-100/90 leading-relaxed mb-6 text-lg">"{review.text[lang]}"</p>
+                  <p className="text-cream-100/90 leading-relaxed mb-4 text-sm">"{review.text[lang]}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-bold text-base shrink-0">
                       {review.name[lang].charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-white">{review.name[lang]}</p>
-                      <p className="text-sm text-cream-300">{review.location[lang]}</p>
+                      <p className="font-semibold text-white text-sm">{review.name[lang]}</p>
+                      <p className="text-xs text-cream-300">{review.location[lang]}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            // No reviews yet — show empty state gracefully
             <p className="text-center text-cream-100/60 py-12">{t.testimonials.subtitle}</p>
           )}
         </div>
