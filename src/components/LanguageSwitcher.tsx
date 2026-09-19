@@ -25,7 +25,7 @@ export function LanguageSwitcher() {
             : 'text-charcoal-500 hover:text-gold-600'
         }`}
       >
-        ع
+        عربية
       </button>
     </div>
   );

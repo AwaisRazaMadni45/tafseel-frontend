@@ -28,7 +28,7 @@ export function Contact() {
     }
   };
 
-  const phoneNumber = '966501234567';
+  const phoneNumber = '966582913730';
   const whatsappHref = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(t.whatsapp.message)}`;
 
   return (
@@ -149,7 +149,7 @@ export function Contact() {
                     </div>
                     <div>
                       <p className="font-medium text-charcoal-800">{t.contact.phoneLabel}</p>
-                      <p className="text-sm text-charcoal-500" dir="ltr">+966 50 123 4567</p>
+                      <p className="text-sm text-charcoal-500" dir="ltr">+966 58 291 3730</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-4">
@@ -158,7 +158,7 @@ export function Contact() {
                     </div>
                     <div>
                       <p className="font-medium text-charcoal-800">{t.contact.email}</p>
-                      <p className="text-sm text-charcoal-500">info@tafseel.com</p>
+                      <p className="text-sm text-charcoal-500">junaidmajeed505@gmail.com</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-4">
