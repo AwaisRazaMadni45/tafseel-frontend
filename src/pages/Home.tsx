@@ -20,24 +20,18 @@ export function Home({ onNavigate }: HomeProps) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
-  // Featured products state
   const [featuredProducts, setFeaturedProducts] = useState<ApiProduct[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
 
-  // Reviews state
   const [reviews, setReviews] = useState<ApiReview[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
 
-  // Product detail modal state
   const [selectedProduct, setSelectedProduct] = useState<ApiProduct | null>(null);
 
-  // Fetch featured products on mount
   useEffect(() => {
     getFeaturedProducts()
       .then((data) => {
-        if (data.length === 0) {
-          return getProducts().then((all) => all.slice(0, 6));
-        }
+        if (data.length === 0) return getProducts().then((all) => all.slice(0, 6));
         return data;
       })
       .then((data) => setFeaturedProducts(data))
@@ -45,50 +39,12 @@ export function Home({ onNavigate }: HomeProps) {
       .finally(() => setProductsLoading(false));
   }, []);
 
-  // Fetch reviews on mount
   useEffect(() => {
     getReviews()
       .then((data) => setReviews(data))
       .catch(() => setReviews([]))
       .finally(() => setReviewsLoading(false));
   }, []);
-
-  // Modal keyboard + scroll lock
-  useEffect(() => {
-    if (!selectedProduct) return;
-    document.body.style.overflow = 'hidden';
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowRight') nextImage();
-      if (e.key === 'ArrowLeft') prevImage();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct, activeImageIndex]);
-
-  const openModal = (product: ApiProduct) => {
-    setSelectedProduct(product);
-    setActiveImageIndex(0);
-  };
-
-  const closeModal = useCallback(() => {
-    setSelectedProduct(null);
-    setActiveImageIndex(0);
-  }, []);
-
-  const nextImage = useCallback(() => {
-    if (!selectedProduct) return;
-    setActiveImageIndex((i) => (i + 1) % selectedProduct.images.length);
-  }, [selectedProduct]);
-
-  const prevImage = useCallback(() => {
-    if (!selectedProduct) return;
-    setActiveImageIndex((i) => (i - 1 + selectedProduct.images.length) % selectedProduct.images.length);
-  }, [selectedProduct]);
 
   const categories = [
     {
