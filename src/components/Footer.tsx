@@ -91,11 +91,11 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-gold-400 shrink-0" />
-                <span dir="ltr">+966 50 123 4567</span>
+                <span dir="ltr">+966 58 291 3730</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-gold-400 shrink-0" />
-                <span>info@tafseel.com</span>
+                <span>junaidmajeed505@gmail.com</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-gold-400 mt-0.5 shrink-0" />

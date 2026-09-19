@@ -8,7 +8,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { lang, t } = useLanguage();
-  const phoneNumber = '966501234567';
+  const phoneNumber = '966582913730';
   const message = encodeURIComponent(
     lang === 'ar'
       ? `مرحباً، أنا مهتم بـ: ${product.name.ar}`
