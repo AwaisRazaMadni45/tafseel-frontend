@@ -1,5 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { LanguageProvider } from '@/context/LanguageContext';
+import { AdminAuthProvider } from '@/admin/context/AdminAuthContext';
+import AdminProtectedRoute from '@/admin/components/AdminProtectedRoute';
+
+// Admin pages
+import AdminLogin from '@/admin/pages/AdminLogin';
+import AdminDashboard from '@/admin/pages/AdminDashboard';
+import AdminProducts from '@/admin/pages/AdminProducts';
+import AdminBulkAdd from '@/admin/pages/AdminBulkAdd';
+import AdminGallery from '@/admin/pages/AdminGallery';
+import AdminReviews from '@/admin/pages/AdminReviews';
+import AdminOrders from '@/admin/pages/AdminOrders';
+import AdminMessages from '@/admin/pages/AdminMessages';
+
+// Customer site
 import { Navbar, type Page } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
@@ -16,13 +31,13 @@ function getPageFromHash(): Page {
   return VALID_PAGES.includes(hash) ? hash : 'home';
 }
 
-function AppContent() {
+// ── Customer site wrapper ──────────────────────────────────────────────────────
+function CustomerSite() {
   const [page, setPage] = useState<Page>(getPageFromHash);
 
-  // Sync URL hash when page changes
   const navigate = useCallback((newPage: Page) => {
     if (newPage === 'home') {
-      window.history.pushState(null, '', window.location.pathname); // no hash for home
+      window.history.pushState(null, '', window.location.pathname);
     } else {
       window.history.pushState(null, '', `#${newPage}`);
     }
@@ -30,14 +45,13 @@ function AppContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Handle browser back/forward buttons
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePop = () => {
       setPage(getPageFromHash());
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
   }, []);
 
   const renderPage = () => {
@@ -61,10 +75,33 @@ function AppContent() {
   );
 }
 
-export default function App() {
-  return (
+// ── Root app with routing ──────────────────────────────────────────────────────
+function AppContent() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  return isAdmin ? (
+    <AdminAuthProvider>
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+        <Route path="/admin/products" element={<AdminProtectedRoute><AdminProducts /></AdminProtectedRoute>} />
+        <Route path="/admin/products/bulk-add" element={<AdminProtectedRoute><AdminBulkAdd /></AdminProtectedRoute>} />
+        <Route path="/admin/gallery" element={<AdminProtectedRoute><AdminGallery /></AdminProtectedRoute>} />
+        <Route path="/admin/reviews" element={<AdminProtectedRoute><AdminReviews /></AdminProtectedRoute>} />
+        <Route path="/admin/orders" element={<AdminProtectedRoute><AdminOrders /></AdminProtectedRoute>} />
+        <Route path="/admin/messages" element={<AdminProtectedRoute><AdminMessages /></AdminProtectedRoute>} />
+      </Routes>
+    </AdminAuthProvider>
+  ) : (
     <LanguageProvider>
-      <AppContent />
+      <Routes>
+        <Route path="/*" element={<CustomerSite />} />
+      </Routes>
     </LanguageProvider>
   );
+}
+
+export default function App() {
+  return <AppContent />;
 }
