@@ -1,6 +1,6 @@
 import { useLanguage } from '@/context/LanguageContext';
 import type { Page } from '@/components/Navbar';
-import { getFeaturedProducts, getReviews, getProducts } from '@/lib/api';
+import { getFeaturedProducts, getReviews, getProducts, subscribeNewsletter } from '@/lib/api';
 import type { ApiProduct, ApiReview } from '@/types/api';
 import { ProductModal } from '@/components/ProductModal';
 import {
@@ -49,15 +49,15 @@ export function Home({ onNavigate }: HomeProps) {
   const categories = [
     {
       key: 'sofas', icon: Sofa, name: t.categories.sofas, desc: t.categories.sofasDesc,
-      image: 'https://images.pexels.com/photos/8135275/pexels-photo-8135275.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: '/sofa.jpg',
     },
     {
       key: 'curtains', icon: Blinds, name: t.categories.curtains, desc: t.categories.curtainsDesc,
-      image: 'https://images.pexels.com/photos/33839793/pexels-photo-33839793.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: '/curtain.jpg',
     },
     {
       key: 'majlis', icon: Layers, name: t.categories.majlis, desc: t.categories.majlisDesc,
-      image: 'https://images.pexels.com/photos/18285958/pexels-photo-18285958.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: '/majlis.jpg',
     },
   ];
 
@@ -68,12 +68,19 @@ export function Home({ onNavigate }: HomeProps) {
     { icon: Truck, title: t.whyChooseUs.delivery, desc: t.whyChooseUs.deliveryDesc },
   ];
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const [subscribeError, setSubscribeError] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+    setSubscribeError('');
+    try {
+      await subscribeNewsletter(email);
       setSubscribed(true);
       setEmail('');
       setTimeout(() => setSubscribed(false), 4000);
+    } catch {
+      setSubscribeError('Failed to subscribe. Please try again.');
     }
   };
 
@@ -302,6 +309,7 @@ export function Home({ onNavigate }: HomeProps) {
                 </button>
               </form>
               {subscribed && <p className="mt-4 text-white font-medium animate-fade-in">{t.newsletter.success}</p>}
+              {subscribeError && <p className="mt-4 text-white/80 font-medium animate-fade-in">{subscribeError}</p>}
             </div>
           </div>
         </div>

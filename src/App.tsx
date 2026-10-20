@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { AdminAuthProvider } from '@/admin/context/AdminAuthContext';
 import AdminProtectedRoute from '@/admin/components/AdminProtectedRoute';
@@ -26,33 +26,36 @@ import { Contact } from '@/pages/Contact';
 
 const VALID_PAGES: Page[] = ['home', 'products', 'about', 'gallery', 'contact'];
 
-function getPageFromHash(): Page {
-  const hash = window.location.hash.replace('#', '') as Page;
-  return VALID_PAGES.includes(hash) ? hash : 'home';
+function getPageFromPath(pathname: string, search: string): Page {
+  // /products, /about, /gallery, /contact → page name
+  const seg = pathname.replace('/', '').split('/')[0] as Page;
+  if (VALID_PAGES.includes(seg)) return seg;
+  // legacy hash support
+  const hash = search.replace('?', '').replace('#', '') as Page;
+  if (VALID_PAGES.includes(hash)) return hash;
+  return 'home';
 }
 
 // ── Customer site wrapper ──────────────────────────────────────────────────────
 function CustomerSite() {
-  const [page, setPage] = useState<Page>(getPageFromHash);
+  const reactNavigate = useNavigate();
+  const location = useLocation();
+  const [page, setPage] = useState<Page>(() =>
+    getPageFromPath(location.pathname, location.hash)
+  );
 
-  const navigate = useCallback((newPage: Page) => {
-    if (newPage === 'home') {
-      window.history.pushState(null, '', window.location.pathname);
-    } else {
-      window.history.pushState(null, '', `#${newPage}`);
-    }
-    setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
+  // Keep page state in sync with browser URL (back/forward buttons)
   useEffect(() => {
-    const handlePop = () => {
-      setPage(getPageFromHash());
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    window.addEventListener('popstate', handlePop);
-    return () => window.removeEventListener('popstate', handlePop);
-  }, []);
+    const p = getPageFromPath(location.pathname, location.hash);
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location]);
+
+  // Navigate using React Router so browser history works properly
+  const navigate = useCallback((newPage: Page) => {
+    const path = newPage === 'home' ? '/' : `/${newPage}`;
+    reactNavigate(path);
+  }, [reactNavigate]);
 
   const renderPage = () => {
     switch (page) {
@@ -83,20 +86,25 @@ function AppContent() {
   return isAdmin ? (
     <AdminAuthProvider>
       <Routes>
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
-        <Route path="/admin/products" element={<AdminProtectedRoute><AdminProducts /></AdminProtectedRoute>} />
-        <Route path="/admin/products/bulk-add" element={<AdminProtectedRoute><AdminBulkAdd /></AdminProtectedRoute>} />
-        <Route path="/admin/gallery" element={<AdminProtectedRoute><AdminGallery /></AdminProtectedRoute>} />
-        <Route path="/admin/reviews" element={<AdminProtectedRoute><AdminReviews /></AdminProtectedRoute>} />
-        <Route path="/admin/orders" element={<AdminProtectedRoute><AdminOrders /></AdminProtectedRoute>} />
-        <Route path="/admin/messages" element={<AdminProtectedRoute><AdminMessages /></AdminProtectedRoute>} />
+        <Route path="/admin/login"              element={<AdminLogin />} />
+        <Route path="/admin"                    element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+        <Route path="/admin/products"           element={<AdminProtectedRoute><AdminProducts /></AdminProtectedRoute>} />
+        <Route path="/admin/products/bulk-add"  element={<AdminProtectedRoute><AdminBulkAdd /></AdminProtectedRoute>} />
+        <Route path="/admin/gallery"            element={<AdminProtectedRoute><AdminGallery /></AdminProtectedRoute>} />
+        <Route path="/admin/reviews"            element={<AdminProtectedRoute><AdminReviews /></AdminProtectedRoute>} />
+        <Route path="/admin/orders"             element={<AdminProtectedRoute><AdminOrders /></AdminProtectedRoute>} />
+        <Route path="/admin/messages"           element={<AdminProtectedRoute><AdminMessages /></AdminProtectedRoute>} />
       </Routes>
     </AdminAuthProvider>
   ) : (
     <LanguageProvider>
       <Routes>
-        <Route path="/*" element={<CustomerSite />} />
+        <Route path="/"          element={<CustomerSite />} />
+        <Route path="/products"  element={<CustomerSite />} />
+        <Route path="/about"     element={<CustomerSite />} />
+        <Route path="/gallery"   element={<CustomerSite />} />
+        <Route path="/contact"   element={<CustomerSite />} />
+        <Route path="/*"         element={<CustomerSite />} />
       </Routes>
     </LanguageProvider>
   );

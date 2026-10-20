@@ -48,8 +48,13 @@ export function getReviews(): Promise<ApiReview[]> {
 
 // ── Contact ───────────────────────────────────────────────────────────────────
 
-/** Submit a contact message — returns the saved message object */
-export function submitContact(data: ContactFormData): Promise<{ message: string }> {
+/** Submit newsletter email */
+export function subscribeNewsletter(email: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>('/newsletter', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
   return apiFetch<{ message: string }>('/contact', {
     method: 'POST',
     body: JSON.stringify(data),
