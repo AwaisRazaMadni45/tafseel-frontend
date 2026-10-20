@@ -20,7 +20,7 @@ export default function AdminBulkAdd() {
 
   const update = (i: number, c: Partial<Row>) => setRows((p) => p.map((r, j) => j === i ? { ...r, ...c } : r));
   const remove = (i: number) => setRows((p) => p.filter((_, j) => j !== i));
-  const allFilled = rows.every((r) => r.nameEn && r.nameAr && r.descEn && r.descAr);
+  const allFilled = rows.length > 0; // any row with a photo can be saved
 
   const saveAll = async () => {
     setSaving(true);
@@ -29,7 +29,20 @@ export default function AdminBulkAdd() {
       update(i, { status: 'saving' });
       try {
         const up = await uploadImage(rows[i].file);
-        await createProduct({ category: rows[i].category, name: { en: rows[i].nameEn, ar: rows[i].nameAr }, description: { en: rows[i].descEn, ar: rows[i].descAr }, images: [up.url], price: rows[i].price ? Number(rows[i].price) : null, isFeatured: false });
+        await createProduct({
+          category: rows[i].category,
+          name: {
+            en: rows[i].nameEn || rows[i].nameAr || 'Untitled',
+            ar: rows[i].nameAr || rows[i].nameEn || 'بدون عنوان',
+          },
+          description: {
+            en: rows[i].descEn || rows[i].descAr || '-',
+            ar: rows[i].descAr || rows[i].descEn || '-',
+          },
+          images: [up.url],
+          price: rows[i].price ? Number(rows[i].price) : null,
+          isFeatured: false,
+        });
         update(i, { status: 'done' });
       } catch (err) { update(i, { status: 'error', errorMessage: err instanceof Error ? err.message : 'Failed' }); }
     }
