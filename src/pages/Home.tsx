@@ -49,15 +49,15 @@ export function Home({ onNavigate }: HomeProps) {
   const categories = [
     {
       key: 'sofas', icon: Sofa, name: t.categories.sofas, desc: t.categories.sofasDesc,
-      image: '/sofa.jpg',
+      image: '/sofa.jpeg',
     },
     {
       key: 'curtains', icon: Blinds, name: t.categories.curtains, desc: t.categories.curtainsDesc,
-      image: '/curtain.jpg',
+      image: '/curtain.jpeg',
     },
     {
       key: 'majlis', icon: Layers, name: t.categories.majlis, desc: t.categories.majlisDesc,
-      image: '/majlis.jpg',
+      image: '/majlis.jpeg',
     },
   ];
 
@@ -92,7 +92,7 @@ export function Home({ onNavigate }: HomeProps) {
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/majlis.jpg"
+            src="/majlis.jpeg"
             alt="Luxury majlis interior"
             className="w-full h-full object-cover"
           />
