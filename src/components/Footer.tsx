@@ -94,8 +94,13 @@ export function Footer({ onNavigate }: FooterProps) {
                 <span dir="ltr">+966 58 291 3730</span>
               </li>
               <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-gold-400 shrink-0" />
+                <span dir="ltr">+966 57 842 5416</span>
+              </li>
+              {/* TODO: client's business email not yet provided — add here once available */}
+              <li className="flex items-center gap-2.5 hidden">
                 <Mail className="w-4 h-4 text-gold-400 shrink-0" />
-                <span>junaidmajeed505@gmail.com</span>
+                <span>info@example.com</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-gold-400 mt-0.5 shrink-0" />

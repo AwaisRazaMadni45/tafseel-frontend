@@ -36,6 +36,31 @@ function getPageFromPath(pathname: string, search: string): Page {
   return 'home';
 }
 
+// SEO: per-page <title> and meta description, bilingual (AR first, then EN) —
+// helps search engines and the browser tab reflect what the visitor is on.
+const PAGE_SEO: Record<Page, { title: string; description: string }> = {
+  home: {
+    title: 'تفصيل ستائر و مجالس فاخرة | Tafseel Curtains & Majlis',
+    description: 'تفصيل وتركيب ستائر ومجالس وكنب فاخر بخامات مختارة وتنفيذ احترافي في الرياض.',
+  },
+  products: {
+    title: 'المنتجات | ستائر، مجالس وكنب فاخر — Tafseel',
+    description: 'تصفح تشكيلتنا من الستائر الفاخرة، المجالس العربية، والكنب المفصل حسب الطلب.',
+  },
+  about: {
+    title: 'من نحن | Tafseel Curtains & Majlis',
+    description: 'تعرف على قصتنا وحرفيتنا في تفصيل الستائر والمجالس الفاخرة في الرياض.',
+  },
+  gallery: {
+    title: 'معرض الأعمال | Tafseel Curtains & Majlis',
+    description: 'نماذج من أعمالنا المنجزة في تفصيل وتركيب الستائر والمجالس الفاخرة.',
+  },
+  contact: {
+    title: 'تواصل معنا | Tafseel Curtains & Majlis',
+    description: 'تواصل معنا عبر واتساب أو نموذج التواصل لطلب عرض سعر أو حجز معاينة.',
+  },
+};
+
 // ── Customer site wrapper ──────────────────────────────────────────────────────
 function CustomerSite() {
   const reactNavigate = useNavigate();
@@ -50,6 +75,19 @@ function CustomerSite() {
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
+
+  // Update the browser tab title + meta description whenever the page changes
+  useEffect(() => {
+    const seo = PAGE_SEO[page];
+    document.title = seo.title;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', seo.description);
+  }, [page]);
 
   // Navigate using React Router so browser history works properly
   const navigate = useCallback((newPage: Page) => {

@@ -123,6 +123,24 @@ export function Home({ onNavigate }: HomeProps) {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-cream-50 to-transparent" />
       </section>
 
+      {/* Trust / stats strip */}
+      <section className="bg-cream-50 py-8 sm:py-10 border-b border-cream-200">
+        <div className="container-lux px-4">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center">
+            {[
+              { value: '+10', label: t.trust.years },
+              { value: '+500', label: t.trust.projects },
+              { value: '+4.9', label: t.trust.rating },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <span className="text-2xl sm:text-4xl font-bold text-gradient-gold font-serif">{stat.value}</span>
+                <span className="text-[11px] sm:text-sm text-charcoal-500 mt-1 tracking-wide">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Categories */}
       <section className="section-padding bg-cream-50">
         <div className="container-lux">

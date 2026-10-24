@@ -55,6 +55,9 @@ export function subscribeNewsletter(email: string): Promise<{ message: string }>
     body: JSON.stringify({ email }),
   });
 }
+
+/** Submit contact form */
+export function submitContact(data: ContactFormData): Promise<{ message: string }> {
   return apiFetch<{ message: string }>('/contact', {
     method: 'POST',
     body: JSON.stringify(data),

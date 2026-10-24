@@ -48,13 +48,24 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
           {/* Logo */}
           <button
             onClick={() => handleNavigate('home')}
-            className="flex flex-col items-start gap-0 shrink-0 max-w-[45%] sm:max-w-none"
+            className="flex items-center gap-2.5 shrink-0 max-w-[65%] sm:max-w-none"
           >
-            <span className={`font-arabic text-lg sm:text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
-              تفصيل ستائر و مجالس
+            <span
+              className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border shrink-0 font-arabic font-bold text-base sm:text-lg transition-colors duration-500 ${
+                scrolled
+                  ? 'bg-charcoal-800 border-gold-400 text-gold-400'
+                  : 'bg-charcoal-900/60 backdrop-blur-sm border-gold-300/60 text-gold-300'
+              }`}
+            >
+              T
             </span>
-            <span className={`text-[10px] sm:text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
-              Tafseel Curtains & Majlis
+            <span className="flex flex-col items-start gap-0">
+              <span className={`font-arabic text-base sm:text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
+                تفصيل ستائر و مجالس
+              </span>
+              <span className={`text-[9px] sm:text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
+                Tafseel Curtains & Majlis
+              </span>
             </span>
           </button>
 

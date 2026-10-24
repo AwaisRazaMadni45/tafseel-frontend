@@ -15,6 +15,11 @@ export interface Translation {
     ctaSecondary: string;
     badge: string;
   };
+  trust: {
+    years: string;
+    projects: string;
+    rating: string;
+  };
   categories: {
     title: string;
     subtitle: string;
@@ -145,6 +150,11 @@ export const translations: Record<Language, Translation> = {
       ctaSecondary: 'Free Consultation',
       badge: 'Luxury Interior Craftsmanship',
     },
+    trust: {
+      years: 'Years of Craftsmanship',
+      projects: 'Projects Completed',
+      rating: 'Client Rating',
+    },
     categories: {
       title: 'Our Collections',
       subtitle: 'Explore our curated range of premium home furnishings',
@@ -235,7 +245,7 @@ export const translations: Record<Language, Translation> = {
       success: 'Your message has been sent successfully!',
       infoTitle: 'Contact Information',
       address: 'Address',
-      addressValue: 'King Fahd Road, Riyadh, Saudi Arabia',
+      addressValue: 'Al-Arid District, Abdullah Bin Al-Aas Road, Riyadh, Saudi Arabia',
       phoneLabel: 'Phone',
       email: 'Email',
       hours: 'Working Hours',
@@ -272,6 +282,11 @@ export const translations: Record<Language, Translation> = {
       cta: 'تصفح المجموعات',
       ctaSecondary: 'استشارة مجانية',
       badge: 'حرفية داخلية فاخرة',
+    },
+    trust: {
+      years: 'سنوات من الحرفية',
+      projects: 'مشروع منجز',
+      rating: 'تقييم العملاء',
     },
     categories: {
       title: 'مجموعاتنا',
@@ -363,7 +378,7 @@ export const translations: Record<Language, Translation> = {
       success: 'تم إرسال رسالتك بنجاح!',
       infoTitle: 'معلومات الاتصال',
       address: 'العنوان',
-      addressValue: 'طريق الملك فهد، الرياض، المملكة العربية السعودية',
+      addressValue: 'حي العارض، طريق عبدالله بن العاص، الرياض، المملكة العربية السعودية',
       phoneLabel: 'الهاتف',
       email: 'البريد الإلكتروني',
       hours: 'ساعات العمل',
