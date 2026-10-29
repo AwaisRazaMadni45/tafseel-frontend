@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { ProductModal } from '@/components/ProductModal';
 import { getProducts } from '@/lib/api';
@@ -7,10 +8,28 @@ import { Sofa, Blinds, Layers, LayoutGrid, Loader2, AlertCircle } from 'lucide-r
 import { MessageCircle } from 'lucide-react';
 
 type Filter = 'all' | Category;
+const VALID_CATEGORIES: Category[] = ['sofas', 'curtains', 'majlis'];
 
 export function Products() {
   const { t, lang } = useLanguage();
-  const [filter, setFilter] = useState<Filter>('all');
+  const [searchParams] = useSearchParams();
+
+  // If the URL has ?category=curtains (e.g. from a footer link), open
+  // directly filtered to that category instead of showing everything.
+  const initialFilter = (): Filter => {
+    const fromUrl = searchParams.get('category');
+    return fromUrl && VALID_CATEGORIES.includes(fromUrl as Category) ? (fromUrl as Category) : 'all';
+  };
+
+  const [filter, setFilter] = useState<Filter>(initialFilter);
+
+  // If someone clicks a different category link (e.g. in the footer) while
+  // already on this page, the URL changes but the component doesn't remount —
+  // this keeps the active filter in sync with it.
+  useEffect(() => {
+    setFilter(initialFilter());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,7 +135,7 @@ export function Products() {
                       <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                     <div className="p-3 sm:p-4">
-                      <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1 line-clamp-1">
+                      <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1 line-clamp-2">
                         {product.name[lang]}
                       </h3>
                       <p className="text-xs text-charcoal-500 line-clamp-2 mb-3">

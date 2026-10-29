@@ -3,7 +3,7 @@ import type { Page } from '@/components/Navbar';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Twitter } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (page: Page) => void;
+  onNavigate: (page: Page, category?: string) => void;
 }
 
 export function Footer({ onNavigate }: FooterProps) {
@@ -14,13 +14,16 @@ export function Footer({ onNavigate }: FooterProps) {
     { key: 'products', label: t.nav.products },
     { key: 'about', label: t.nav.about },
     { key: 'gallery', label: t.nav.gallery },
+    { key: 'quote', label: t.nav.quote },
     { key: 'contact', label: t.nav.contact },
   ];
 
+  // Each category now links straight to its own filtered view,
+  // instead of all three pointing at the same unfiltered /products page.
   const categories = [
-    { label: t.categories.sofas, page: 'products' as Page },
-    { label: t.categories.curtains, page: 'products' as Page },
-    { label: t.categories.majlis, page: 'products' as Page },
+    { label: t.categories.sofas, page: 'products' as Page, category: 'sofas' },
+    { label: t.categories.curtains, page: 'products' as Page, category: 'curtains' },
+    { label: t.categories.majlis, page: 'products' as Page, category: 'majlis' },
   ];
 
   return (
@@ -71,7 +74,7 @@ export function Footer({ onNavigate }: FooterProps) {
               {categories.map((cat, i) => (
                 <li key={i}>
                   <button
-                    onClick={() => { onNavigate(cat.page); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    onClick={() => { onNavigate(cat.page, cat.category); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     className="text-sm text-cream-300 hover:text-gold-400 transition-colors duration-300"
                   >
                     {cat.label}
@@ -94,8 +97,13 @@ export function Footer({ onNavigate }: FooterProps) {
                 <span dir="ltr">+966 58 291 3730</span>
               </li>
               <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-gold-400 shrink-0" />
+                <span dir="ltr">+966 57 842 5416</span>
+              </li>
+              {/* TODO: client's business email not yet provided — add here once available */}
+              <li className="flex items-center gap-2.5 hidden">
                 <Mail className="w-4 h-4 text-gold-400 shrink-0" />
-                <span>junaidmajeed505@gmail.com</span>
+                <span>info@example.com</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-gold-400 mt-0.5 shrink-0" />

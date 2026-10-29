@@ -6,14 +6,20 @@ export interface Translation {
     products: string;
     about: string;
     gallery: string;
+    quote: string;
     contact: string;
   };
   hero: {
     title: string;
     subtitle: string;
     cta: string;
-    ctaSecondary: string;
+    ctaWhatsapp: string;
     badge: string;
+  };
+  trust: {
+    craftsmanship: string;
+    custom: string;
+    direct: string;
   };
   categories: {
     title: string;
@@ -70,15 +76,12 @@ export interface Translation {
     missionText: string;
     craftTitle: string;
     craftText: string;
-    stats: {
-      years: string;
-      yearsLabel: string;
-      projects: string;
-      projectsLabel: string;
-      clients: string;
-      clientsLabel: string;
-      fabrics: string;
-      fabricsLabel: string;
+    badgeText: string;
+    values: {
+      detail: string;
+      passion: string;
+      materials: string;
+      personal: string;
     };
   };
   gallery: {
@@ -121,6 +124,29 @@ export interface Translation {
     rights: string;
     follow: string;
   };
+  quote: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    formTitle: string;
+    formSubtitle: string;
+    neighborhood: string;
+    neighborhoodPlaceholder: string;
+    name: string;
+    namePlaceholder: string;
+    service: string;
+    serviceSofas: string;
+    serviceCurtains: string;
+    serviceMajlis: string;
+    serviceOther: string;
+    details: string;
+    detailsPlaceholder: string;
+    send: string;
+    whatsappCard: string;
+    directCard: string;
+    areaCard: string;
+    areaValue: string;
+  };
   whatsapp: {
     label: string;
     message: string;
@@ -136,14 +162,20 @@ export const translations: Record<Language, Translation> = {
       products: 'Products',
       about: 'About Us',
       gallery: 'Gallery',
+      quote: 'Get a Quote',
       contact: 'Contact',
     },
     hero: {
       title: 'Crafting Timeless Elegance for Your Home',
       subtitle: 'Premium sofas, curtains, and traditional Arabic majlis — custom-tailored to perfection',
       cta: 'Explore Collections',
-      ctaSecondary: 'Free Consultation',
+      ctaWhatsapp: 'Chat on WhatsApp',
       badge: 'Luxury Interior Craftsmanship',
+    },
+    trust: {
+      craftsmanship: 'Handcrafted with Care',
+      custom: 'Tailored to Your Space',
+      direct: 'Direct Communication, No Middlemen',
     },
     categories: {
       title: 'Our Collections',
@@ -193,22 +225,19 @@ export const translations: Record<Language, Translation> = {
       title: 'About Tafseel',
       subtitle: 'A legacy of craftsmanship and elegance',
       storyTitle: 'Our Story',
-      storyP1: 'Tafseel Curtains & Majlis was founded with a passion for preserving the rich heritage of Arabian interior design while embracing modern luxury. For over two decades, we have been crafting premium sofas, curtains, and traditional majlis seating for discerning clients across the Gulf region.',
-      storyP2: 'Our journey began in a small workshop where master artisans poured their skill into every stitch and seam. Today, we have grown into a trusted name in luxury home furnishings, serving hundreds of families who appreciate the art of fine craftsmanship.',
+      storyP1: 'Tafseel was born from a simple belief: every home deserves pieces made with real care, not mass-produced on an assembly line. From the first fabric sample to the final stitch, we work closely with each client to bring their vision to life.',
+      storyP2: 'We keep things honest — quality materials, fair pricing, and getting the details right the first time. Whether it is a single curtain or a full majlis, we treat every project with the same attention and respect.',
       storyP3: 'Every piece we create tells a story — of tradition, of elegance, and of the timeless beauty of Arabian interiors. We invite you to be part of our story.',
       missionTitle: 'Our Mission',
       missionText: 'To bring the warmth and elegance of Arabian interior design into every home, combining traditional craftsmanship with contemporary luxury to create spaces that are both beautiful and deeply comfortable.',
       craftTitle: 'Our Craftsmanship',
       craftText: 'Each piece is handcrafted by skilled artisans who have honed their craft over generations. From selecting the finest fabrics to the final stitch, every step is carried out with meticulous attention to detail.',
-      stats: {
-        years: '20+',
-        yearsLabel: 'Years of Experience',
-        projects: '500+',
-        projectsLabel: 'Projects Completed',
-        clients: '300+',
-        clientsLabel: 'Happy Clients',
-        fabrics: '100+',
-        fabricsLabel: 'Premium Fabrics',
+      badgeText: 'Trusted Craftsmanship',
+      values: {
+        detail: 'Attention to Every Detail',
+        passion: 'Passion-Driven Work',
+        materials: 'Premium Materials Only',
+        personal: 'A Personal Touch',
       },
     },
     gallery: {
@@ -235,7 +264,7 @@ export const translations: Record<Language, Translation> = {
       success: 'Your message has been sent successfully!',
       infoTitle: 'Contact Information',
       address: 'Address',
-      addressValue: 'King Fahd Road, Riyadh, Saudi Arabia',
+      addressValue: 'Al-Arid District, Abdullah Bin Al-Aas Road, Riyadh, Saudi Arabia',
       phoneLabel: 'Phone',
       email: 'Email',
       hours: 'Working Hours',
@@ -251,6 +280,29 @@ export const translations: Record<Language, Translation> = {
       rights: 'All rights reserved.',
       follow: 'Follow Us',
     },
+    quote: {
+      eyebrow: 'Get a Quote',
+      heading: "Let's start designing your space today",
+      description: 'We are happy to receive your inquiries and requests. Fill in a few details and our team will get back to you on WhatsApp to arrange a preview appointment.',
+      formTitle: 'Request a Quote',
+      formSubtitle: 'Fill in the details and your request will be sent directly to us via WhatsApp.',
+      neighborhood: 'Neighborhood',
+      neighborhoodPlaceholder: 'Example: Al-Arid neighborhood',
+      name: 'Name',
+      namePlaceholder: 'Your name',
+      service: 'Service Required',
+      serviceSofas: 'Sofas',
+      serviceCurtains: 'Curtains',
+      serviceMajlis: 'Majlis',
+      serviceOther: 'Other / Not sure yet',
+      details: 'Order Details',
+      detailsPlaceholder: 'Number of windows, approximate sizes, preferred colors...',
+      send: 'Send the Request via WhatsApp',
+      whatsappCard: 'WhatsApp',
+      directCard: 'Direct Contact',
+      areaCard: 'Service Area',
+      areaValue: 'Riyadh, Saudi Arabia',
+    },
     whatsapp: {
       label: 'Chat with us',
       message: "Hello! I'm interested in your products. Can you help me?",
@@ -264,14 +316,20 @@ export const translations: Record<Language, Translation> = {
       products: 'المنتجات',
       about: 'من نحن',
       gallery: 'معرض الأعمال',
+      quote: 'اطلب عرض سعر',
       contact: 'تواصل معنا',
     },
     hero: {
       title: 'نصنع الأناقة الخالدة لمنزلك',
       subtitle: 'أرائك فاخرة وستائر ومجالس عربية تقليدية — مصممة بعناية لإتقان التفاصيل',
       cta: 'تصفح المجموعات',
-      ctaSecondary: 'استشارة مجانية',
+      ctaWhatsapp: 'تواصل عبر واتساب',
       badge: 'حرفية داخلية فاخرة',
+    },
+    trust: {
+      craftsmanship: 'صناعة يدوية بعناية',
+      custom: 'مصمم خصيصاً لمساحتك',
+      direct: 'تواصل مباشر بدون وسطاء',
     },
     categories: {
       title: 'مجموعاتنا',
@@ -321,22 +379,19 @@ export const translations: Record<Language, Translation> = {
       title: 'عن تفصيل',
       subtitle: 'إرث من الحرفية والأناقة',
       storyTitle: 'قصتنا',
-      storyP1: 'تأسست تفصيل ستائر ومجالس بشغف الحفاظ على التراث الغني للتصميم الداخلي العربي مع احتضان الفخامة الحديثة. لأكثر من عقدين، نصنع أرائك وستائر ومجالس عربية تقليدية فاخرة لعملاء مميزين في جميع أنحاء منطقة الخليج.',
-      storyP2: 'بدأت رحلتنا في ورشة صغيرة حيث صب الحرفيون المهرة إبداعهم في كل غرزة وخيط. اليوم، أصبحنا اسماً موثوقاً في الأثاث المنزلي الفاخر، نخدم مئات العائلات التي تقدر فن الحرفية الدقيقة.',
+      storyP1: 'انطلقت تفصيل من فكرة بسيطة: كل منزل يستحق قطعاً مصنوعة بعناية حقيقية، لا إنتاجاً مكرراً بلا روح. من اختيار القماش الأول وحتى آخر غرزة، نعمل عن قرب مع كل عميل لتحويل فكرته إلى واقع.',
+      storyP2: 'نحرص على الصدق في كل تفصيل — خامات عالية الجودة، أسعار عادلة، وإتقان التفاصيل من أول مرة. سواء كانت ستارة واحدة أو مجلساً كاملاً، نتعامل مع كل مشروع بنفس الاهتمام والاحترام.',
       storyP3: 'كل قطعة نصنعها تروي قصة — قصة التقاليد والأناقة والجمال الخالد للتصميم الداخلي العربي. ندعوك لتكون جزءاً من قصتنا.',
       missionTitle: 'مهمتنا',
       missionText: 'إدخال دفء وأناقة التصميم الداخري العربي إلى كل منزل، مع الجمع بين الحرفية التقليدية والفخامة المعاصرة لخلق مساحات جميلة ومريحة في آن واحد.',
       craftTitle: 'حرفيتنا',
       craftText: 'كل قطعة مصنوعة يدوياً من قبل حرفيين مهرة صقلوا حرفتهم على مدى أجيال. من اختيار أجود الأقمشة إلى الغرزة الأخيرة، كل خطوة تتم بعناية فائقة واهتمام بأدق التفاصيل.',
-      stats: {
-        years: '+20',
-        yearsLabel: 'سنوات خبرة',
-        projects: '+500',
-        projectsLabel: 'مشروع مكتمل',
-        clients: '+300',
-        clientsLabel: 'عميل سعيد',
-        fabrics: '+100',
-        fabricsLabel: 'قماش فاخر',
+      badgeText: 'حرفية موثوقة',
+      values: {
+        detail: 'اهتمام بكل التفاصيل',
+        passion: 'عمل نابع من الشغف',
+        materials: 'خامات فاخرة فقط',
+        personal: 'لمسة شخصية',
       },
     },
     gallery: {
@@ -363,7 +418,7 @@ export const translations: Record<Language, Translation> = {
       success: 'تم إرسال رسالتك بنجاح!',
       infoTitle: 'معلومات الاتصال',
       address: 'العنوان',
-      addressValue: 'طريق الملك فهد، الرياض، المملكة العربية السعودية',
+      addressValue: 'حي العارض، طريق عبدالله بن العاص، الرياض، المملكة العربية السعودية',
       phoneLabel: 'الهاتف',
       email: 'البريد الإلكتروني',
       hours: 'ساعات العمل',
@@ -378,6 +433,29 @@ export const translations: Record<Language, Translation> = {
       contactInfo: 'معلومات الاتصال',
       rights: 'جميع الحقوق محفوظة.',
       follow: 'تابعنا',
+    },
+    quote: {
+      eyebrow: 'اطلب عرض سعر',
+      heading: 'لنبدأ بتصميم مساحتك اليوم',
+      description: 'يسعدنا استقبال استفساراتكم وطلباتكم. املأ بعض التفاصيل وسيتواصل معك فريقنا عبر واتساب لترتيب موعد معاينة.',
+      formTitle: 'اطلب عرض سعر',
+      formSubtitle: 'املأ التفاصيل وسيتم إرسال طلبك مباشرة إلينا عبر واتساب.',
+      neighborhood: 'الحي',
+      neighborhoodPlaceholder: 'مثال: حي العارض',
+      name: 'الاسم',
+      namePlaceholder: 'اسمك',
+      service: 'الخدمة المطلوبة',
+      serviceSofas: 'كنب وأرائك',
+      serviceCurtains: 'ستائر',
+      serviceMajlis: 'مجالس',
+      serviceOther: 'أخرى / غير محدد بعد',
+      details: 'تفاصيل الطلب',
+      detailsPlaceholder: 'عدد النوافذ، المقاسات التقريبية، الألوان المفضلة...',
+      send: 'إرسال الطلب عبر واتساب',
+      whatsappCard: 'واتساب',
+      directCard: 'تواصل مباشر',
+      areaCard: 'منطقة الخدمة',
+      areaValue: 'الرياض، المملكة العربية السعودية',
     },
     whatsapp: {
       label: 'تحدث معنا',

@@ -111,16 +111,43 @@ export function Home({ onNavigate }: HomeProps) {
             {t.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <button onClick={() => onNavigate('products')} className="btn-primary">
+            <a
+              href={`https://wa.me/966582913730?text=${encodeURIComponent(t.whatsapp.message)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              <MessageCircle className="w-5 h-5" />
+              {t.hero.ctaWhatsapp}
+            </a>
+            <button onClick={() => onNavigate('products')} className="btn-outline text-white border-gold-400 hover:bg-gold-500">
               {t.hero.cta}
               <Arrow className="w-5 h-5" />
-            </button>
-            <button onClick={() => onNavigate('contact')} className="btn-outline text-white border-gold-400 hover:bg-gold-500">
-              {t.hero.ctaSecondary}
             </button>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-cream-50 to-transparent" />
+      </section>
+
+      {/* Trust strip — qualitative, no unverified numbers */}
+      <section className="bg-cream-50 py-8 sm:py-10 border-b border-cream-200">
+        <div className="container-lux px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
+            {[
+              { icon: Award, label: t.trust.craftsmanship },
+              { icon: Palette, label: t.trust.custom },
+              { icon: MessageCircle, label: t.trust.direct },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} className="flex flex-col items-center gap-2">
+                  <Icon className="w-6 h-6 text-gold-500" />
+                  <span className="text-sm text-charcoal-600 tracking-wide">{item.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       {/* Categories */}
@@ -206,7 +233,7 @@ export function Home({ onNavigate }: HomeProps) {
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                   <div className="p-3 sm:p-4">
-                    <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1 line-clamp-1">{product.name[lang]}</h3>
+                    <h3 className="font-semibold text-sm sm:text-base text-charcoal-800 mb-1 line-clamp-2">{product.name[lang]}</h3>
                     <p className="text-xs text-charcoal-500 line-clamp-2 mb-3">{product.description[lang]}</p>
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gold-600">
                       <MessageCircle className="w-3.5 h-3.5" />

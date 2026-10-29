@@ -23,8 +23,9 @@ import { Products } from '@/pages/Products';
 import { About } from '@/pages/About';
 import { Gallery } from '@/pages/Gallery';
 import { Contact } from '@/pages/Contact';
+import { Quote } from '@/pages/Quote';
 
-const VALID_PAGES: Page[] = ['home', 'products', 'about', 'gallery', 'contact'];
+const VALID_PAGES: Page[] = ['home', 'products', 'about', 'gallery', 'contact', 'quote'];
 
 function getPageFromPath(pathname: string, search: string): Page {
   // /products, /about, /gallery, /contact → page name
@@ -35,6 +36,35 @@ function getPageFromPath(pathname: string, search: string): Page {
   if (VALID_PAGES.includes(hash)) return hash;
   return 'home';
 }
+
+// SEO: per-page <title> and meta description, bilingual (AR first, then EN) —
+// helps search engines and the browser tab reflect what the visitor is on.
+const PAGE_SEO: Record<Page, { title: string; description: string }> = {
+  home: {
+    title: 'تفصيل ستائر و مجالس فاخرة | Tafseel Curtains & Majlis',
+    description: 'تفصيل وتركيب ستائر ومجالس وكنب فاخر بخامات مختارة وتنفيذ احترافي في الرياض.',
+  },
+  products: {
+    title: 'المنتجات | ستائر، مجالس وكنب فاخر — Tafseel',
+    description: 'تصفح تشكيلتنا من الستائر الفاخرة، المجالس العربية، والكنب المفصل حسب الطلب.',
+  },
+  about: {
+    title: 'من نحن | Tafseel Curtains & Majlis',
+    description: 'تعرف على قصتنا وحرفيتنا في تفصيل الستائر والمجالس الفاخرة في الرياض.',
+  },
+  gallery: {
+    title: 'معرض الأعمال | Tafseel Curtains & Majlis',
+    description: 'نماذج من أعمالنا المنجزة في تفصيل وتركيب الستائر والمجالس الفاخرة.',
+  },
+  contact: {
+    title: 'تواصل معنا | Tafseel Curtains & Majlis',
+    description: 'تواصل معنا عبر واتساب أو نموذج التواصل لطلب عرض سعر أو حجز معاينة.',
+  },
+  quote: {
+    title: 'اطلب عرض سعر | Tafseel Curtains & Majlis',
+    description: 'املأ تفاصيل طلبك من ستائر أو مجالس أو كنب وسنتواصل معك مباشرة عبر واتساب.',
+  },
+};
 
 // ── Customer site wrapper ──────────────────────────────────────────────────────
 function CustomerSite() {
@@ -51,10 +81,25 @@ function CustomerSite() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
 
-  // Navigate using React Router so browser history works properly
-  const navigate = useCallback((newPage: Page) => {
+  // Update the browser tab title + meta description whenever the page changes
+  useEffect(() => {
+    const seo = PAGE_SEO[page];
+    document.title = seo.title;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', seo.description);
+  }, [page]);
+
+  // Navigate using React Router so browser history works properly.
+  // Optional `category` lets callers (e.g. footer category links) jump
+  // straight to /products?category=curtains instead of the unfiltered list.
+  const navigate = useCallback((newPage: Page, category?: string) => {
     const path = newPage === 'home' ? '/' : `/${newPage}`;
-    reactNavigate(path);
+    reactNavigate(category ? `${path}?category=${category}` : path);
   }, [reactNavigate]);
 
   const renderPage = () => {
@@ -64,6 +109,7 @@ function CustomerSite() {
       case 'about':    return <About />;
       case 'gallery':  return <Gallery />;
       case 'contact':  return <Contact />;
+      case 'quote':    return <Quote />;
       default:         return <Home onNavigate={navigate} />;
     }
   };

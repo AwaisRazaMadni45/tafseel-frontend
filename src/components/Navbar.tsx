@@ -3,7 +3,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Menu, X } from 'lucide-react';
 
-export type Page = 'home' | 'products' | 'about' | 'gallery' | 'contact';
+export type Page = 'home' | 'products' | 'about' | 'gallery' | 'contact' | 'quote';
 
 interface NavbarProps {
   currentPage: Page;
@@ -26,6 +26,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
     { key: 'products', label: t.nav.products },
     { key: 'about', label: t.nav.about },
     { key: 'gallery', label: t.nav.gallery },
+    { key: 'quote', label: t.nav.quote },
     { key: 'contact', label: t.nav.contact },
   ];
 
@@ -48,30 +49,28 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
           {/* Logo */}
           <button
             onClick={() => handleNavigate('home')}
-            className="flex flex-col items-start gap-0 shrink-0 max-w-[45%] sm:max-w-none"
+            className="flex items-center gap-2.5 shrink-0 max-w-[65%] sm:max-w-none"
           >
-            <span className={`font-arabic text-lg sm:text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
-              تفصيل ستائر و مجالس
+            <span className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border shrink-0 font-arabic font-bold text-base sm:text-lg transition-colors duration-500 ${
+                scrolled ? 'bg-charcoal-800 border-gold-400 text-gold-400' : 'bg-charcoal-900/60 backdrop-blur-sm border-gold-300/60 text-gold-300'
+              }`}>
+              T
             </span>
-            <span className={`text-[10px] sm:text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
-              Tafseel Curtains & Majlis
+            <span className="flex flex-col items-start gap-0">
+              <span className={`font-arabic text-base sm:text-2xl font-bold leading-tight ${scrolled ? 'text-gold-600' : 'text-white drop-shadow-lg'}`}>
+                تفصيل ستائر و مجالس
+              </span>
+              <span className={`text-[9px] sm:text-xs font-medium tracking-wide ${scrolled ? 'text-charcoal-500' : 'text-cream-100 drop-shadow'}`}>
+                Tafseel Curtains & Majlis
+              </span>
             </span>
           </button>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => handleNavigate(item.key)}
-                className={`nav-link text-base ${
-                  currentPage === item.key
-                    ? 'text-gold-600 after:w-full'
-                    : scrolled
-                    ? 'text-charcoal-600'
-                    : 'text-white/90'
-                }`}
-              >
+              <button key={item.key} onClick={() => handleNavigate(item.key)}
+                className={`nav-link text-base ${currentPage === item.key ? 'text-gold-600 after:w-full' : scrolled ? 'text-charcoal-600' : 'text-white/90'}`}>
                 {item.label}
               </button>
             ))}
@@ -80,15 +79,8 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
           {/* Right side — language switcher + hamburger */}
           <div className="flex items-center gap-2 shrink-0">
             <LanguageSwitcher />
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-lg transition-colors"
-              aria-label="Menu"
-            >
-              {mobileOpen
-                ? <X className="w-6 h-6 text-charcoal-700" />
-                : <Menu className={`w-6 h-6 ${scrolled ? 'text-charcoal-700' : 'text-white'}`} />
-              }
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden p-2 rounded-lg transition-colors" aria-label="Menu">
+              {mobileOpen ? <X className="w-6 h-6 text-charcoal-700" /> : <Menu className={`w-6 h-6 ${scrolled ? 'text-charcoal-700' : 'text-white'}`} />}
             </button>
           </div>
         </nav>
@@ -100,15 +92,8 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
           <div className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className={`absolute top-0 ${lang === 'ar' ? 'left-0' : 'right-0'} h-full w-72 bg-cream-50 shadow-2xl pt-24 px-6 flex flex-col gap-2 animate-slide-in`}>
             {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => handleNavigate(item.key)}
-                className={`text-start px-4 py-3.5 rounded-lg text-lg font-medium transition-all duration-300 ${
-                  currentPage === item.key
-                    ? 'bg-gold-100 text-gold-700'
-                    : 'text-charcoal-600 hover:bg-cream-100'
-                }`}
-              >
+              <button key={item.key} onClick={() => handleNavigate(item.key)}
+                className={`text-start px-4 py-3.5 rounded-lg text-lg font-medium transition-all duration-300 ${currentPage === item.key ? 'bg-gold-100 text-gold-700' : 'text-charcoal-600 hover:bg-cream-100'}`}>
                 {item.label}
               </button>
             ))}
